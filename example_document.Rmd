@@ -78,6 +78,17 @@ assert_all_are_non_negative(counts)
 assert_all_are_whole_numbers(counts)
 ```
 
+### stopifnot
+
+```{r stopifnot_test, test = TRUE}
+counts <- c(1, 2, 3, 4.5)
+stopifnot(
+  is.numeric(counts),
+  all(counts >= 0),
+  isTRUE(all.equal(counts, round(counts)))
+)
+```
+
 
 ## Do Some Analysis
 
