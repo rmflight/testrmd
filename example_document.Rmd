@@ -107,6 +107,17 @@ v <- validator(hite < 0, weight > 0)
 confront(women, v, raise = "all")
 ```
 
+### checkmate
+
+```{r checkmate_test1, test = TRUE}
+library(checkmate)
+checkmate::assert_string("aa", min.chars = 4)
+```
+
+```{r checkmate_test2, test = TRUE}
+checkmate::assert_string("aaa", min.chars = 2)
+```
+
 
 ## Do Some Analysis
 
