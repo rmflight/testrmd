@@ -61,6 +61,39 @@ assert_rows(mtcars, num_row_NAs, within_bounds(0,2), mpg:carb)
 assert_rows(mtcars, num_row_NAs, within_bounds(2,4), mpg:carb)
 ```
 
+### ensurer
+```{r}
+library(ensurer)
+y <- 3
+
+ensure_that(y, is.numeric)
+```
+
+```{r}
+ensure_that(y, is.character)
+```
+
+### assertive
+
+```{r assertive_test1, test = TRUE}
+library(assertive)
+counts <- c(1, 2, 3, 4.5)
+assert_is_numeric(counts)
+assert_all_are_non_negative(counts)
+assert_all_are_whole_numbers(counts)
+```
+
+### stopifnot
+
+```{r stopifnot_test, test = TRUE}
+counts <- c(1, 2, 3, 4.5)
+stopifnot(
+  is.numeric(counts),
+  all(counts >= 0),
+  isTRUE(all.equal(counts, round(counts)))
+)
+```
+
 ### validate
 
 Only seems to error out if something is not found ....., can't see how to make
