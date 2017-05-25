@@ -1,0 +1,52 @@
+---
+title: "an example of testing"
+author: "everyone"
+date: "`r Sys.time()`"
+---
+
+```{css}
+.testrmd-section {
+  padding: 10px;
+}
+.testrmd-section.pass {
+  background-color: #CCFFCC;
+}
+```
+
+```{r setup}
+knitr::knit_hooks$set(
+  chunk = function(x, options) {
+    if (isTRUE(options$test)) {
+      paste0(
+        "<div class='testrmd-section pass'>",
+        paste(x, collapse = "\n"),
+        "</div>"
+      )
+    } else {
+      x
+    }
+  }
+)
+
+library(assertthat)
+knitr::opts_chunk$set(error = TRUE)
+```
+
+## Do Some Tests
+
+```{r passing_test, test = TRUE}
+y <- "hello"
+
+assert_that(is.character(y))
+```
+
+```{r failing_test, test = TRUE}
+stopifnot(is.numeric(y))
+```
+
+## Do Some Analysis
+
+```{r}
+head(mtcars)
+```
+
