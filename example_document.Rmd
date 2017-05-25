@@ -2,6 +2,8 @@
 title: "an example of testing"
 author: "everyone"
 date: "`r Sys.time()`"
+params: 
+  test: TRUE
 ---
 
 ```{css}
@@ -34,13 +36,18 @@ knitr::opts_chunk$set(error = TRUE)
 
 ## Do Some Tests
 
-```{r passing_test, test = TRUE}
+```{r}
+params$test
+```
+
+
+```{r passing_test, test = params$test}
 y <- "hello"
 
 assert_that(is.character(y))
 ```
 
-```{r failing_test, test = TRUE}
+```{r failing_test, test = params$test}
 stopifnot(is.numeric(y))
 ```
 
