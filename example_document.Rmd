@@ -61,11 +61,19 @@ assert_rows(mtcars, num_row_NAs, within_bounds(0,2), mpg:carb)
 assert_rows(mtcars, num_row_NAs, within_bounds(2,4), mpg:carb)
 ```
 
-### validatethat
 
-```{r validate_test1, test = TRUE}
-library(validi)
+### ensurer
+```{r}
+library(ensurer)
+y <- 3
+
+ensure_that(y, is.numeric)
 ```
+```{r}
+ensure_that(y, is.character)
+```
+
+
 
 
 ## Do Some Analysis
