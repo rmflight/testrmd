@@ -37,6 +37,8 @@ knitr::opts_chunk$set(error = TRUE)
 
 ## Do Some Tests
 
+### assertthat
+
 ```{r passing_test, test = TRUE}
 library(assertthat)
 y <- "hello"
@@ -45,8 +47,10 @@ assert_that(is.character(y))
 ```
 
 ```{r failing_test, test = TRUE}
-assert_that(is.numeric(x))
+assert_that(is.numeric(y))
 ```
+
+### assertr
 
 ```{r assertr_test, test = TRUE}
 library(assertr)
@@ -55,6 +59,12 @@ assert_rows(mtcars, num_row_NAs, within_bounds(0,2), mpg:carb)
 
 ```{r assertr_test2, test = TRUE}
 assert_rows(mtcars, num_row_NAs, within_bounds(2,4), mpg:carb)
+```
+
+### validatethat
+
+```{r validate_test1, test = TRUE}
+library(validi)
 ```
 
 
