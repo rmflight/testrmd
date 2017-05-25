@@ -64,7 +64,18 @@ assert_rows(mtcars, num_row_NAs, within_bounds(2,4), mpg:carb)
 ### validatethat
 
 ```{r validate_test1, test = TRUE}
-library(validi)
+library(validate)
+```
+
+
+### assertive
+
+```{r assertive_test1, test = TRUE}
+library(assertive)
+counts <- c(1, 2, 3, 4.5)
+assert_is_numeric(counts)
+assert_all_are_non_negative(counts)
+assert_all_are_whole_numbers(counts)
 ```
 
 
