@@ -61,10 +61,17 @@ assert_rows(mtcars, num_row_NAs, within_bounds(0,2), mpg:carb)
 assert_rows(mtcars, num_row_NAs, within_bounds(2,4), mpg:carb)
 ```
 
-### validatethat
+### validate
+
+Only seems to error out if something is not found ....., can't see how to make
+a failure move up to something else, unless we have a custom thing.
 
 ```{r validate_test1, test = TRUE}
-library(validi)
+library(validate)
+data(women)
+
+v <- validator(hite < 0, weight > 0)
+confront(women, v, raise = "all")
 ```
 
 
