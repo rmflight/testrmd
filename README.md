@@ -1,3 +1,5 @@
+<img src = "testrmd_hex.png">
+
 # testrmd
 
 `testrmd` provides facilities to enable testing of and reporting on tested
