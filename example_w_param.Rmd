@@ -13,7 +13,7 @@ testrmd::styles()  # Just temporary--should be automatic
 
 ## Using YAML to test
 
-By adding `test: TRUE` or `test: FALSE` to your YAML params you can parameterize your test chunks in your document globally. 
+By adding `test: TRUE` or `test: FALSE` to your YAML params you can parameterize your test chunks globally. 
 
 ```
 params:
@@ -26,103 +26,21 @@ To pass this parameter to your test chunks, you use `eval = params$test`.
 
 <!--html_preserve-->
 <pre>```{r stopifnot_parameterized, test = TRUE, eval= params$test}
-library(assertthat)
-y <- "hello"
-
-assert_that(is.character(y))
-```</pre><!--/html_preserve-->
-
-#### chunk using `test = TRUE`
-
-```{r failing_test, test = TRUE}
-assert_that(is.numeric(y))
-```
-
-## Do Some Tests
-
-### stopifnot
-
-```{r stopifnot_test, test = TRUE, eval = params$test}
 counts <- c(1, 2, 3, 4.5)
 stopifnot(
   is.numeric(counts),
   all(counts >= 0),
   isTRUE(all.equal(counts, round(counts)))
 )
-```
-
-
-### assertthat
-
-#### chunk using `params$test`
-
-<!--html_preserve-->
-<pre>```{r passing_test, test = TRUE}
-library(assertthat)
-y <- "hello"
-
-assert_that(is.character(y))
 ```</pre><!--/html_preserve-->
 
+#### unparameterized chunk using `test = TRUE`
 
-
-### assertr
-
-```{r assertr_test, test = TRUE, eval = params$test}
-library(assertr)
-assert_rows(mtcars, num_row_NAs, within_bounds(0,2), mpg:carb)
+```{r failing_test, test = TRUE, echo = TRUE}
+library(assertthat)
+assert_that(is.numeric(y))
 ```
 
-```{r assertr_test2, test = TRUE, eval= params$test}
-assert_rows(mtcars, num_row_NAs, within_bounds(2,4), mpg:carb)
-```
-
-### ensurer
-```{r ensurer_1, test = TRUE, eval = params$test}
-library(ensurer)
-y <- 3
-
-ensure_that(y, is.numeric)
-```
-
-```{r ensurer_2, test = TRUE, eval = params$test}
-ensure_that(y, is.character)
-```
-
-### assertive
-
-```{r assertive_test1, test = TRUE}
-library(assertive)
-counts <- c(1, 2, 3, 4.5)
-assert_is_numeric(counts)
-assert_all_are_non_negative(counts)
-assert_all_are_whole_numbers(counts)
-```
-
-
-### validate
-
-Only seems to error out if something is not found ....., can't see how to make
-a failure move up to something else, unless we have a custom thing.
-
-```{r validate_test1, test = TRUE}
-library(validate)
-data(women)
-
-v <- validator(hite < 0, weight > 0)
-confront(women, v, raise = "all")
-```
-
-### checkmate
-
-```{r checkmate_test1, test = TRUE}
-library(checkmate)
-checkmate::assert_string("aa", min.chars = 4)
-```
-
-```{r checkmate_test2, test = TRUE}
-checkmate::assert_string("aaa", min.chars = 2)
-```
 
 ### testthat
 
@@ -136,12 +54,5 @@ if ((compareVersion('1.0.2', as.character(packageVersion("testthat")))) == -1) {
   testthat::expect_false(FALSE)
   testthat::expect_false(TRUE)
 }
-```
-
-
-## Do Some Analysis
-
-```{r}
-head(mtcars)
 ```
 
