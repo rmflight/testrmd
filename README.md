@@ -1,4 +1,4 @@
-<img src = "testrmd_hex.png">
+<img src = "testrmd_hex.png", height = "100">
 
 # testrmd
 
