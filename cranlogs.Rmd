@@ -1,18 +1,25 @@
 ---
 title: "CRAN log processing"
-output: html_document
+output:
+  html_document:
+    keep_md: true
 params:
-  packages: knitr, ggplot2
-  start: !r as.Date("2017-01-01")
+  packages: assertr, assertthat, ensurer, assertive, checkmate, validate, breakfast
+  start: !r as.Date("2016-01-01")
   end: !r as.Date(Sys.time()) - 1
 ---
 
-This report shows downloads of the CRAN packages `r params$packages`.
+This report shows downloads of the CRAN packages: `r params$packages`
 
 ```{r setup,echo=FALSE}
 testrmd::init()
-testrmd::styles()
+```
+```{r message=FALSE}
+library(knitr)
+library(dplyr)
+library(ggplot2)
 library(cranlogs)
+library(lubridate)
 
 packages <- strsplit(params$packages, ",\\s*")[[1]]
 ```
@@ -25,31 +32,61 @@ expect_true(params$start < params$end)
 expect_gt(length(packages), 0)
 ```
 
-```{r echo=FALSE}
+## Fetch and summarize
+
+The data comes from the [`cranlogs`](https://github.com/metacran/cranlogs) package, which uses [the logs from RStudio's CRAN mirrors](http://cran-logs.rstudio.com/).
+
+```{r}
 daily_downloads <- cran_downloads(packages, from = params$start, to = params$end)
+head(daily_downloads)
 ```
-
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r test=TRUE}
-expect_true(FALSE)
+for (pkg in packages) {
+  package_daily_downloads <- daily_downloads %>%
+    filter(package == pkg) %>%
+    arrange(date)
+  
+  # Make sure no days are missing
+  expected_range <- params$start:params$end
+  expect_equal(
+    as.integer(as.Date(package_daily_downloads$date)),
+    expected_range,
+    info = pkg
+  )
+}
 ```
 
-```{r cars}
-summary(cars)
+In addition to daily downloads, we'll calculate weekly downloads. We'll use lubridate's `floor_date` to add a new `week` column to the data frame, then group and sum.
+
+```{r}
+weekly_downloads <- daily_downloads %>%
+  mutate(week = floor_date(date, "week")) %>%
+  # Discard partial weeks
+  filter(week >= ceiling_date(params$start, "week") & week < floor_date(Sys.time(), "week")) %>%
+  group_by(package, week) %>%
+  summarise(count = sum(count))
+head(weekly_downloads)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r test=TRUE}
+zero_rows <- weekly_downloads %>%
+  filter(count == 0)
+expect_equal(nrow(zero_rows), 0)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Downloads by week
+
+```{r}
+week_plot <- ggplot(weekly_downloads, aes(week, count, color = package)) +
+  geom_line()
+plotly::ggplotly(week_plot)
+```
+
+## Total downloads
+
+```{r}
+daily_downloads %>%
+  group_by(package) %>%
+  summarise(count = sum(count))
+```
