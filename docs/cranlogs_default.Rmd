@@ -27,7 +27,7 @@ packages <- strsplit(params$packages, ",\\s*")[[1]]
 ```
 
 
-```{r test=TRUE}
+```{r test=TRUE,message=FALSE}
 library(testthat)
 
 expect_true(params$start < params$end)
@@ -44,6 +44,12 @@ head(daily_downloads)
 ```
 
 ```{r test=TRUE}
+expect_equal(colnames(daily_downloads), c("date", "count", "package"))
+expect_gt(nrow(daily_downloads), 0)
+expect_is(daily_downloads[["date"]], "Date")
+expect_is(daily_downloads[["count"]], "numeric")
+expect_is(daily_downloads[["package"]], "character")
+
 for (pkg in packages) {
   package_daily_downloads <- daily_downloads %>%
     filter(package == pkg) %>%
@@ -74,7 +80,7 @@ head(weekly_downloads)
 ```{r test=TRUE}
 zero_rows <- weekly_downloads %>%
   filter(count == 0)
-expect_equal(nrow(zero_rows), 0)
+expect_equal(nrow(zero_rows), 0, info = unique(zero_rows$package))
 ```
 
 ## Downloads by week
