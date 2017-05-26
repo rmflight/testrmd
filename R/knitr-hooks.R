@@ -100,10 +100,7 @@ knitr_document_hook <- function(old_hook) {
   force(old_hook)
 
   function(x) {
-    error_count <- get_doc_count("error")
-    pass <- error_count == 0
-
-    if (pass || !isTRUE(test_options$summary)) {
+    if (!isTRUE(test_options$summary)) {
       return(old_hook(x))
     }
 
@@ -115,6 +112,9 @@ knitr_document_hook <- function(old_hook) {
 
     header <- matches[[1]][2]
     body <- matches[[1]][3]
+
+    error_count <- get_doc_count("error")
+    pass <- error_count == 0
 
     data <- list(
       content = body,
