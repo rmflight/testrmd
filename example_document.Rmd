@@ -36,14 +36,14 @@ assert_rows(mtcars, num_row_NAs, within_bounds(2,4), mpg:carb)
 ```
 
 ### ensurer
-```{r}
+```{r ensurer_1, test = TRUE}
 library(ensurer)
 y <- 3
 
 ensure_that(y, is.numeric)
 ```
 
-```{r}
+```{r ensurer_2, test = TRUE}
 ensure_that(y, is.character)
 ```
 
