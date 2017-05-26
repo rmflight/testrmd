@@ -4,10 +4,9 @@
 \alias{init}
 \title{Initialize testrmd}
 \usage{
-init()
+init(summary = TRUE)
 }
 \description{
 Call from the setup chunk of an Rmd document to enable the `test=TRUE` chunk
 option on R chunks.
 }
-
