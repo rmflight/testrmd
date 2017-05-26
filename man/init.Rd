@@ -4,7 +4,7 @@
 \alias{init}
 \title{Initialize testrmd}
 \usage{
-init()
+init(summary = TRUE, theme = c("default", "emoji"))
 }
 \description{
 Call from the setup chunk of an Rmd document to enable the `test=TRUE` chunk

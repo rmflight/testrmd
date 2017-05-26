@@ -6,7 +6,7 @@ test_options <- new.env(parent = emptyenv())
 #' option on R chunks.
 #' @export
 #'
-#' @include logging_errors.R
+#' @include logging-errors.R
 init <- function(summary = TRUE, theme = c("default", "emoji")) {
   theme <- match.arg(theme)
   knitr::opts_hooks$set(
@@ -31,6 +31,8 @@ init <- function(summary = TRUE, theme = c("default", "emoji")) {
   test_options$summary <- summary
   test_options$theme <- theme
   init_log_file()
+
+  dependencies()
 }
 
 increment_count <- function(type) {
@@ -57,8 +59,7 @@ current_chunk_counts <- new.env(parent = emptyenv())
 current_doc_counts <- new.env(parent = emptyenv())
 reset_doc_counts()
 
-#' @export
-styles <- function() {
+dependencies <- function() {
   htmltools::attachDependencies(
     htmltools::tagList(),
     htmltools::htmlDependency("testrmd", packageVersion("testrmd"),

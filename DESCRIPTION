@@ -6,9 +6,9 @@ Authors@R: c(person(given = c("Robert", "M"), family = "Flight", email = "rfligh
              person(given = "Christopher", family = "Tull", role = c("aut")),
              person(given = "Mara", family= "Averick", role = c("aut")))
 Description: Provides facilities for adding test chunks to RMarkdown documents,
-  as well as CSS and javascript for nice styling of the output. This enables
-  testing of data without completely stopping the knitting of a document, while
-  seeing possible problems in the final HTML output.
+    as well as CSS and javascript for nice styling of the output. This enables
+    testing of data without completely stopping the knitting of a document, while
+    seeing possible problems in the final HTML output.
 Depends:
     R (>= 3.4.0)
 Imports:
@@ -17,3 +17,6 @@ License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1
+Collate:
+    'logging-errors.R'
+    'knitr-hooks.R'
