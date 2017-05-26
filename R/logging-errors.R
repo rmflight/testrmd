@@ -21,12 +21,7 @@ init_log_file <- function(){
       log_env$do_logging <- FALSE
     }
   } else {
-    if (!interactive()) {
-      log_env$do_logging <- TRUE
-      log_env$log_file <- file.path(getwd(), "testrmd_errors.log")
-    } else {
-      log_env$do_logging <- FALSE
-    }
+    log_env$do_logging <- FALSE
   }
 
   if (log_env$do_logging) {
