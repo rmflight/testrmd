@@ -93,16 +93,8 @@ knitr_chunk_hook <- function(x, options) {
     status = if (pass) "pass" else "fail",
     pass = pass,
     pass_count = get_count("pass"),
-    error_count = get_count("error")
+    error_count = get_count("error"),
+    content = paste(x, collapse = "\n")
   )
-  begin <- render_template("chunk-begin", data)
-  end <- render_template("chunk-end", data)
-
-  html <- paste0(
-    begin,
-    paste(x, collapse = "\n"),
-    end
-  )
-
-  html
+  render_template("chunk", data)
 }
