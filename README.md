@@ -1,33 +1,32 @@
 # testrmd
 
-Provides testing facilities for RMarkdown chunks.
+`testrmd` provides facilities to enable testing of and reporting on tested
+RMarkdown chunks.
 
-## Introduction
+### Introduction
 
 Very often we want to generate RMarkdown reports where tests are performed on
 the data, but we do not want the knitting of the report to fail completely 
 if the tests don't pass. Rather, we would like to see **information about the
-failing tests** in the final document.
+failing tests** in the final document. `testrmd` allows you to see such 
+information from within the margins of your document.
 
-`testrmd` provides facilities to enable testing of and reporting on tested
-RMarkdown chunks.
-
-## Installation
+### Installation
 
 ```r
 devtools::install_github("ropenscilabs/testrmd")
 ```
 
-## Basic Use
+### Basic Use
 
 To enable testing of RMarkdown chunks in your document, you will need to add
-two function calls in a chunk before you want to do testing.
+a function calls in a chunk before you want to do testing.
 
 ```r
 testrmd::init()
 ```
 
-Thereafter, any chunk that you want to have as part of the testing, you simply
+Thereafter, for any chunk that you want to have as part of the testing, you simply
 need to add the option `test = TRUE` in the chunk header, and then have testing code
 that returns an error if the test fails. As a simple example, let's test if
 a variable is numeric:
@@ -37,13 +36,13 @@ a variable is numeric:
     stopifnot(is.numeric(y))
     ```
 
-## Example Output
+### Example Output
 
 [Here](https://ropenscilabs.github.io/testrmd/cranlogs.html) is an example of the HTML output that gets generated.
 
-## Supported Frameworks
+### Supported Frameworks
 
-`testrmd` supports any validation method that throws an error when a test fails. The following validation frameworks have been shown to easily return errors compatible with `testrmd`:
+`testrmd` supports validation methods that throw errors when a test fails. The following validation frameworks have been shown to easily return errors compatible with `testrmd`:
 
 * [`stopifnot`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/stopifnot.html)
 * [`testthat`](https://github.com/hadley/testthat) (version 1.0.2 and later)
@@ -54,7 +53,7 @@ a variable is numeric:
 * [`checkmate`](https://github.com/mllg/checkmate)
 * [`testit`](https://github.com/yihui/testit)
 
-### Unconfirmed Frameworks
+#### Unconfirmed Frameworks
 
 The following validation methods have not been confirmed to work with `testrmd` because their core functionality does not throw errors to indicate a failed test:
 
