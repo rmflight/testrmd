@@ -84,6 +84,10 @@ knitr_chunk_hook <- function(x, options) {
 
   on.exit(reset_counts(), add = TRUE)
 
+  if (options$eval == FALSE) {
+    return("")
+  }
+
   pass <- get_count("error") == 0
 
   data <- list(
