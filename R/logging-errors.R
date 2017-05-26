@@ -1,12 +1,36 @@
 log_env <- new.env(parent = emptyenv())
 
 init_log_file <- function(){
-  if (!interactive()) {
-    log_env$do_logging <- TRUE
-    log_env$log_file <- file.path(getwd(), "testrmd_errors.log")
-    cat(as.character(Sys.time()), file = log_env$log_file, sep = "\n", append = FALSE)
+  testrmd_log <- getOption("testrmd_log")
+
+  # deciding whether or not to do error logging:
+  #  logic is:
+  #   if TRUE, log to default file
+  #   if character, assume that it is a file name, log to that file
+  #   if FALSE, don't log
+  #   if not set, check for interactivity, and if NOT interactive, log to default file
+  #browser(expr = TRUE)
+  if (!is.null(testrmd_log)) {
+    if (isTRUE(testrmd_log)) {
+      log_env$do_logging <- TRUE
+      log_env$log_file <- file.path(getwd(), "testrmd_errors.log")
+    } else if (is.character(testrmd_log)) {
+      log_env$do_logging <- TRUE
+      log_env$log_file <- testrmd_log
+    } else if (!isTRUE(testrmd_log) && is.logical(testrmd_log)) {
+      log_env$do_logging <- FALSE
+    }
   } else {
-    log_env$do_logging <- FALSE
+    if (!interactive()) {
+      log_env$do_logging <- TRUE
+      log_env$log_file <- file.path(getwd(), "testrmd_errors.log")
+    } else {
+      log_env$do_logging <- FALSE
+    }
+  }
+
+  if (log_env$do_logging) {
+    cat(as.character(Sys.time()), file = log_env$log_file, sep = "\n", append = FALSE)
   }
 }
 
