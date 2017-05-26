@@ -1,28 +1,25 @@
 ---
-title: "an example of testing with YAML params"
-author: "everyone"
-date: "`r Sys.time()`"
+title: "Disabling tests using YAML params"
+date: "`r Sys.Date()`"
 params:
   test: FALSE
 ---
 
-```{r setup}
+```{r setup, include = FALSE}
 testrmd::init()
 testrmd::styles()  # Just temporary--should be automatic
 ```
 
-## Using YAML to test
+### Using YAML to disable tests
 
-By adding `test: TRUE` or `test: FALSE` to your YAML params you can parameterize your test chunks globally. 
+By adding `test: FALSE` to your YAML params you can stop test chunks from being evaluated throughout the document. If the parameter is set to `test: TRUE`, test chunks will run as usual.
 
 ```
 params:
   test: FALSE
 ```
 
-To pass this parameter to your test chunks, you use `eval = params$test`.
-
-#### chunk using `params$test`
+This test parameter is passed into your chunk options using `eval = params$test`, as shown below.
 
 <!--html_preserve-->
 <pre>```{r stopifnot_parameterized, test = TRUE, eval = params$test}
@@ -34,25 +31,18 @@ stopifnot(
 )
 ```</pre><!--/html_preserve-->
 
-#### unparameterized chunk using `test = TRUE`
+### Enabling individual test chunks
 
-```{r failing_test, test = TRUE, echo = TRUE}
+To run selected test chunks within the same document, you simply exclude the `eval` option for an individual chunk, or expressly set the chunk option to `eval = TRUE`.
+
+<!--html_preserve-->
+<pre>```{r failing_test, test = TRUE, eval = TRUE}
 library(assertthat)
 assert_that(is.numeric(y))
-```
+```</pre><!--/html_preserve-->
 
-
-### testthat
-
-Depends on a patched version, currently `1.0.2.9000`, install via
-
-* `devtools::install_github("hadley/testthat#594")`
-
-```{r testthat_1, test = TRUE}
-if ((compareVersion('1.0.2', as.character(packageVersion("testthat")))) == -1) {
-  library(testthat)
-  testthat::expect_false(FALSE)
-  testthat::expect_false(TRUE)
-}
+```{r failing_test_true, test = TRUE}
+library(assertthat)
+assert_that(is.numeric(y))
 ```
 
