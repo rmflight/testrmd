@@ -106,6 +106,18 @@ if ((compareVersion('1.0.2', as.character(packageVersion("testthat")))) == -1) {
 }
 ```
 
+### testit
+
+```{r testit_test1, test = TRUE}
+library(testit)
+y <- 10
+testit::assert("This is the number ten.", y == 10)
+```
+
+```{r testit_test2, test = TRUE}
+testit::assert("This is the number nine.", y == 9)
+```
+
 ## Do Some Analysis
 
 ```{r}
