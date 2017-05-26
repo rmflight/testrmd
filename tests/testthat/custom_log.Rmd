@@ -1,0 +1,9 @@
+```{r}
+options(testrmd_log = "custom_errors.log")
+testrmd::init()
+```
+
+```{r ch1, test = TRUE}
+stopifnot(is.numeric("5"))
+```
+
