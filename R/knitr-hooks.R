@@ -4,7 +4,7 @@
 #' option on R chunks.
 #' @export
 #'
-#' @include logging_errors.R
+#' @include logging-errors.R
 init <- function(summary = TRUE) {
   knitr::opts_hooks$set(
     error = function(options) {
