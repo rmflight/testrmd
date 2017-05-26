@@ -1,0 +1,8 @@
+```{r}
+testrmd::init()
+```
+
+```{r ch1, test = TRUE}
+stopifnot(is.numeric("5"))
+```
+
