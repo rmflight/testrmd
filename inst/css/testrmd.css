@@ -27,6 +27,7 @@
   cursor: pointer;
 }
 
-.testrmd-chunk .panel-body {
+.testrmd-chunk.panel>.panel-heading {
+  padding-top: 15px;
   padding-bottom: 5.5px;
 }
