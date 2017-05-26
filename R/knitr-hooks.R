@@ -3,6 +3,8 @@
 #' Call from the setup chunk of an Rmd document to enable the `test=TRUE` chunk
 #' option on R chunks.
 #' @export
+#'
+#' @include logging_errors.R
 init <- function() {
   knitr::opts_hooks$set(
     error = function(options) {
@@ -19,6 +21,9 @@ init <- function() {
     chunk = knitr_chunk_hook,
     error = error
   )
+
+  reset_counts()
+  init_log_file()
 }
 
 increment_count <- function(type) {
@@ -59,7 +64,9 @@ knitr_error_hook <- function(old_hook) {
   force(old_hook)
   function(x, options) {
     if (isTRUE(options$test)) {
+      #browser(expr = TRUE)
       increment_count("error")
+      write_to_log(x, options)
     }
     old_hook(x, options)
   }
