@@ -1,11 +1,14 @@
 Package: testrmd
 Title: Testing for R Markdown Chunks
-Version: 0.0.0.9000
+Version: 0.0.1.9000
 Authors@R: c(person(given = c("Robert", "M"), family = "Flight", email = "rflight79@gmail.com", role = c("aut", "cre")),
              person(given = "Joe", family = "Cheng", role = c("aut")),
              person(given = "Christopher", family = "Tull", role = c("aut")),
              person(given = "Mara", family= "Averick", role = c("aut")))
-Description: What the package does (one paragraph).
+Description: Provides facilities for adding test chunks to RMarkdown documents,
+  as well as CSS and javascript for nice styling of the output. This enables
+  testing of data without completely stopping the knitting of a document, while
+  seeing possible problems in the final HTML output.
 Depends:
     R (>= 3.4.0)
 Imports:
