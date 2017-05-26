@@ -92,6 +92,20 @@ checkmate::assert_string("aa", min.chars = 4)
 checkmate::assert_string("aaa", min.chars = 2)
 ```
 
+### testthat
+
+Depends on a patched version, currently `1.0.2.9000`, install via
+
+* `devtools::install_github("hadley/testthat#594")`
+
+```{r testthat_1, test = TRUE}
+if ((compareVersion('1.0.2', as.character(packageVersion("testthat")))) == -1) {
+  library(testthat)
+  testthat::expect_false(FALSE)
+  testthat::expect_false(TRUE)
+}
+```
+
 
 ## Do Some Analysis
 
