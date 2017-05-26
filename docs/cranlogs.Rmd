@@ -12,8 +12,9 @@ params:
 This report shows downloads of the CRAN packages: `r params$packages`
 
 ```{r setup,echo=FALSE}
-testrmd::init()
+testrmd::init(theme = "emoji")
 ```
+
 ```{r message=FALSE}
 library(knitr)
 library(dplyr)
