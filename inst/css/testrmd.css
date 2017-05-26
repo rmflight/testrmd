@@ -1,0 +1,6 @@
+.testrmd-section {
+  padding: 10px;
+}
+.testrmd-section.pass {
+  background-color: #CCFFCC;
+}
