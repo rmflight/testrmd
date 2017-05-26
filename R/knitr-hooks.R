@@ -4,6 +4,10 @@ test_options <- new.env(parent = emptyenv())
 #'
 #' Call from the setup chunk of an Rmd document to enable the `test=TRUE` chunk
 #' option on R chunks.
+#'
+#' @param summary do you want a summary of your tests?
+#' @param theme use the default or emoji theme?
+#'
 #' @export
 #'
 #' @include logging-errors.R
