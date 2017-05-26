@@ -6,6 +6,11 @@
 \usage{
 init(summary = TRUE, theme = c("default", "emoji"))
 }
+\arguments{
+\item{summary}{do you want a summary of your tests?}
+
+\item{theme}{use the default or emoji theme?}
+}
 \description{
 Call from the setup chunk of an Rmd document to enable the `test=TRUE` chunk
 option on R chunks.

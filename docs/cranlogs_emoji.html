@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>CRAN log processing</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<link href="libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="libs/highlightjs-1.1/highlight.js"></script>
+<link href="libs/testrmd-0.0.1.9000/testrmd.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<link href="libs/plotlyjs-1.26.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotlyjs-1.26.1/plotly-latest.min.js"></script>
+<script src="libs/plotly-binding-4.6.0/plotly.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">CRAN log processing</h1>
+
+</div>
+
+
+
+<div class="alert alert-danger">
+  <span style="font-size: 18px;">&#x1f4a9;</span> <strong>Warning!</strong> This document contains 1 failing test.
+</div>
+
+<p>This report shows downloads of the CRAN packages: assertr, assertthat, ensurer, assertive, checkmate, validate, breakfast</p>
+<pre class="r"><code>library(knitr)
+library(dplyr)
+library(ggplot2)
+library(cranlogs)
+library(lubridate)
+
+packages &lt;- strsplit(params$packages, &quot;,\\s*&quot;)[[1]]</code></pre>
+
+<div class="testrmd-badge-container-outer">
+  <div class="testrmd-badge-container-inner">
+      <span class="testrmd-badge" data-toggle="collapse" data-target="#testrmd-chunk-9276264" aria-expanded="false" aria-controls="testrmd-chunk-9276264"><span style="font-size: 18px;">&#x1f44c;</span></span>
+      </div>
+</div>
+<div id="testrmd-chunk-9276264" class="testrmd-chunk panel panel-info collapse">
+  <div class="panel-heading">
+
+<pre class="r"><code>library(testthat)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;testthat&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     matches</code></pre>
+<pre class="r"><code>expect_true(params$start &lt; params$end)
+expect_gt(length(packages), 0)</code></pre>
+</div>
+</div>
+<div id="fetch-and-summarize" class="section level2">
+<h2>Fetch and summarize</h2>
+<p>The data comes from the <a href="https://github.com/metacran/cranlogs"><code>cranlogs</code></a> package, which uses <a href="http://cran-logs.rstudio.com/">the logs from RStudio’s CRAN mirrors</a>.</p>
+<pre class="r"><code>daily_downloads &lt;- cran_downloads(packages, from = params$start, to = params$end)
+head(daily_downloads)</code></pre>
+<pre><code>##         date count package
+## 1 2016-01-01     7 assertr
+## 2 2016-01-02     9 assertr
+## 3 2016-01-03     2 assertr
+## 4 2016-01-04    15 assertr
+## 5 2016-01-05    14 assertr
+## 6 2016-01-06    13 assertr</code></pre>
+
+<div class="testrmd-badge-container-outer">
+  <div class="testrmd-badge-container-inner">
+      <span class="testrmd-badge" data-toggle="collapse" data-target="#testrmd-chunk-6140919" aria-expanded="false" aria-controls="testrmd-chunk-6140919"><span style="font-size: 18px;">&#x1f44c;</span></span>
+      </div>
+</div>
+<div id="testrmd-chunk-6140919" class="testrmd-chunk panel panel-info collapse">
+  <div class="panel-heading">
+
+<pre class="r"><code>for (pkg in packages) {
+  package_daily_downloads &lt;- daily_downloads %&gt;%
+    filter(package == pkg) %&gt;%
+    arrange(date)
+  
+  # Make sure no days are missing
+  expected_range &lt;- params$start:params$end
+  expect_equal(
+    as.integer(as.Date(package_daily_downloads$date)),
+    expected_range,
+    info = pkg
+  )
+}</code></pre>
+</div>
+</div>
+<p>In addition to daily downloads, we’ll calculate weekly downloads. We’ll use lubridate’s <code>floor_date</code> to add a new <code>week</code> column to the data frame, then group and sum.</p>
+<pre class="r"><code>weekly_downloads &lt;- daily_downloads %&gt;%
+  mutate(week = floor_date(date, &quot;week&quot;)) %&gt;%
+  # Discard partial weeks
+  filter(week &gt;= ceiling_date(params$start, &quot;week&quot;) &amp; week &lt; floor_date(Sys.time(), &quot;week&quot;)) %&gt;%
+  group_by(package, week) %&gt;%
+  summarise(count = sum(count))
+head(weekly_downloads)</code></pre>
+<pre><code>## Source: local data frame [6 x 3]
+## Groups: package [1]
+## 
+##     package       week count
+##       &lt;chr&gt;     &lt;date&gt; &lt;dbl&gt;
+## 1 assertive 2016-01-03   125
+## 2 assertive 2016-01-10   138
+## 3 assertive 2016-01-17   170
+## 4 assertive 2016-01-24   192
+## 5 assertive 2016-01-31   118
+## 6 assertive 2016-02-07   133</code></pre>
+
+<div class="testrmd-badge-container-outer">
+  <div class="testrmd-badge-container-inner">
+    
+      <span class="testrmd-badge" data-toggle="collapse" data-target="#testrmd-chunk-5425770" aria-expanded="false" aria-controls="testrmd-chunk-5425770"><span style="font-size: 18px;">&#x1f4a9;</span>&#xd7;&#x2009;&#x2009;1</span>
+  </div>
+</div>
+<div id="testrmd-chunk-5425770" class="testrmd-chunk panel panel-danger collapse">
+  <div class="panel-heading">
+
+<pre class="r"><code>zero_rows &lt;- weekly_downloads %&gt;%
+  filter(count == 0)
+expect_equal(nrow(zero_rows), 0)</code></pre>
+<pre><code>## Error: nrow(zero_rows) not equal to 0.
+## 1/1 mismatches
+## [1] 72 - 0 == 72</code></pre>
+</div>
+</div>
+</div>
+<div id="downloads-by-week" class="section level2">
+<h2>Downloads by week</h2>
+<pre class="r"><code>week_plot &lt;- ggplot(weekly_downloads, aes(week, count, color = package)) +
+  geom_line()
+plotly::ggplotly(week_plot)</code></pre>
+<pre><code>## Warning: We recommend that you use the dev version of ggplot2 with `ggplotly()`
+## Install it with: `devtools::install_github(&#39;hadley/ggplot2&#39;)`</code></pre>
+<div id="c0ca356b9154" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="c0ca356b9154">{"x":{"data":[{"x":[1451779200000,1452384000000,1452988800000,1453593600000,1454198400000,1454803200000,1455408000000,1456012800000,1456617600000,1457222400000,1457827200000,1458432000000,1459036800000,1459641600000,1460246400000,1460851200000,1461456000000,1462060800000,1462665600000,1463270400000,1463875200000,1464480000000,1465084800000,1465689600000,1466294400000,1466899200000,1467504000000,1468108800000,1468713600000,1469318400000,1469923200000,1470528000000,1471132800000,1471737600000,1472342400000,1472947200000,1473552000000,1474156800000,1474761600000,1475366400000,1475971200000,1476576000000,1477180800000,1477785600000,1478390400000,1478995200000,1479600000000,1480204800000,1480809600000,1481414400000,1482019200000,1482624000000,1483228800000,1483833600000,1484438400000,1485043200000,1485648000000,1486252800000,1486857600000,1487462400000,1488067200000,1488672000000,1489276800000,1489881600000,1490486400000,1491091200000,1491696000000,1492300800000,1492905600000,1493510400000,1494115200000,1494720000000],"y":[125,138,170,192,118,133,166,201,202,299,193,167,296,218,169,184,162,267,454,310,207,147,145,153,228,148,286,148,187,267,128,111,87,178,129,156,131,175,158,219,138,210,215,206,239,184,152,175,189,146,185,1986,2094,288,286,278,259,248,294,237,261,282,259,278,219,388,296,254,342,234,290,246],"text":["week: 16803<br />count:   125<br />package: assertive","week: 16810<br />count:   138<br />package: assertive","week: 16817<br />count:   170<br />package: assertive","week: 16824<br />count:   192<br />package: assertive","week: 16831<br />count:   118<br />package: assertive","week: 16838<br />count:   133<br />package: assertive","week: 16845<br />count:   166<br />package: assertive","week: 16852<br />count:   201<br />package: assertive","week: 16859<br />count:   202<br />package: assertive","week: 16866<br />count:   299<br />package: assertive","week: 16873<br />count:   193<br />package: assertive","week: 16880<br />count:   167<br />package: assertive","week: 16887<br />count:   296<br />package: assertive","week: 16894<br />count:   218<br />package: assertive","week: 16901<br />count:   169<br />package: assertive","week: 16908<br />count:   184<br />package: assertive","week: 16915<br />count:   162<br />package: assertive","week: 16922<br />count:   267<br />package: assertive","week: 16929<br />count:   454<br />package: assertive","week: 16936<br />count:   310<br />package: assertive","week: 16943<br />count:   207<br />package: assertive","week: 16950<br />count:   147<br />package: assertive","week: 16957<br />count:   145<br />package: assertive","week: 16964<br />count:   153<br />package: assertive","week: 16971<br />count:   228<br />package: assertive","week: 16978<br />count:   148<br />package: assertive","week: 16985<br />count:   286<br />package: assertive","week: 16992<br />count:   148<br />package: assertive","week: 16999<br />count:   187<br />package: assertive","week: 17006<br />count:   267<br />package: assertive","week: 17013<br />count:   128<br />package: assertive","week: 17020<br />count:   111<br />package: assertive","week: 17027<br />count:    87<br />package: assertive","week: 17034<br />count:   178<br />package: assertive","week: 17041<br />count:   129<br />package: assertive","week: 17048<br />count:   156<br />package: assertive","week: 17055<br />count:   131<br />package: assertive","week: 17062<br />count:   175<br />package: assertive","week: 17069<br />count:   158<br />package: assertive","week: 17076<br />count:   219<br />package: assertive","week: 17083<br />count:   138<br />package: assertive","week: 17090<br />count:   210<br />package: assertive","week: 17097<br />count:   215<br />package: assertive","week: 17104<br />count:   206<br />package: assertive","week: 17111<br />count:   239<br />package: assertive","week: 17118<br />count:   184<br />package: assertive","week: 17125<br />count:   152<br />package: assertive","week: 17132<br />count:   175<br />package: assertive","week: 17139<br />count:   189<br />package: assertive","week: 17146<br />count:   146<br />package: assertive","week: 17153<br />count:   185<br />package: assertive","week: 17160<br />count:  1986<br />package: assertive","week: 17167<br />count:  2094<br />package: assertive","week: 17174<br />count:   288<br />package: assertive","week: 17181<br />count:   286<br />package: assertive","week: 17188<br />count:   278<br />package: assertive","week: 17195<br />count:   259<br />package: assertive","week: 17202<br />count:   248<br />package: assertive","week: 17209<br />count:   294<br />package: assertive","week: 17216<br />count:   237<br />package: assertive","week: 17223<br />count:   261<br />package: assertive","week: 17230<br />count:   282<br />package: assertive","week: 17237<br />count:   259<br />package: assertive","week: 17244<br />count:   278<br />package: assertive","week: 17251<br />count:   219<br />package: assertive","week: 17258<br />count:   388<br />package: assertive","week: 17265<br />count:   296<br />package: assertive","week: 17272<br />count:   254<br />package: assertive","week: 17279<br />count:   342<br />package: assertive","week: 17286<br />count:   234<br />package: assertive","week: 17293<br />count:   290<br />package: assertive","week: 17300<br />count:   246<br />package: assertive"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"assertive","legendgroup":"assertive","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1451779200000,1452384000000,1452988800000,1453593600000,1454198400000,1454803200000,1455408000000,1456012800000,1456617600000,1457222400000,1457827200000,1458432000000,1459036800000,1459641600000,1460246400000,1460851200000,1461456000000,1462060800000,1462665600000,1463270400000,1463875200000,1464480000000,1465084800000,1465689600000,1466294400000,1466899200000,1467504000000,1468108800000,1468713600000,1469318400000,1469923200000,1470528000000,1471132800000,1471737600000,1472342400000,1472947200000,1473552000000,1474156800000,1474761600000,1475366400000,1475971200000,1476576000000,1477180800000,1477785600000,1478390400000,1478995200000,1479600000000,1480204800000,1480809600000,1481414400000,1482019200000,1482624000000,1483228800000,1483833600000,1484438400000,1485043200000,1485648000000,1486252800000,1486857600000,1487462400000,1488067200000,1488672000000,1489276800000,1489881600000,1490486400000,1491091200000,1491696000000,1492300800000,1492905600000,1493510400000,1494115200000,1494720000000],"y":[75,114,151,133,61,69,104,99,124,47,57,49,73,68,84,62,53,45,77,57,53,62,63,90,71,63,84,40,97,74,98,84,94,87,77,91,98,93,69,113,72,101,92,118,97,140,95,117,124,117,90,48,81,72,81,181,199,196,143,85,136,78,891,911,196,318,275,209,264,153,158,175],"text":["week: 16803<br />count:    75<br />package: assertr","week: 16810<br />count:   114<br />package: assertr","week: 16817<br />count:   151<br />package: assertr","week: 16824<br />count:   133<br />package: assertr","week: 16831<br />count:    61<br />package: assertr","week: 16838<br />count:    69<br />package: assertr","week: 16845<br />count:   104<br />package: assertr","week: 16852<br />count:    99<br />package: assertr","week: 16859<br />count:   124<br />package: assertr","week: 16866<br />count:    47<br />package: assertr","week: 16873<br />count:    57<br />package: assertr","week: 16880<br />count:    49<br />package: assertr","week: 16887<br />count:    73<br />package: assertr","week: 16894<br />count:    68<br />package: assertr","week: 16901<br />count:    84<br />package: assertr","week: 16908<br />count:    62<br />package: assertr","week: 16915<br />count:    53<br />package: assertr","week: 16922<br />count:    45<br />package: assertr","week: 16929<br />count:    77<br />package: assertr","week: 16936<br />count:    57<br />package: assertr","week: 16943<br />count:    53<br />package: assertr","week: 16950<br />count:    62<br />package: assertr","week: 16957<br />count:    63<br />package: assertr","week: 16964<br />count:    90<br />package: assertr","week: 16971<br />count:    71<br />package: assertr","week: 16978<br />count:    63<br />package: assertr","week: 16985<br />count:    84<br />package: assertr","week: 16992<br />count:    40<br />package: assertr","week: 16999<br />count:    97<br />package: assertr","week: 17006<br />count:    74<br />package: assertr","week: 17013<br />count:    98<br />package: assertr","week: 17020<br />count:    84<br />package: assertr","week: 17027<br />count:    94<br />package: assertr","week: 17034<br />count:    87<br />package: assertr","week: 17041<br />count:    77<br />package: assertr","week: 17048<br />count:    91<br />package: assertr","week: 17055<br />count:    98<br />package: assertr","week: 17062<br />count:    93<br />package: assertr","week: 17069<br />count:    69<br />package: assertr","week: 17076<br />count:   113<br />package: assertr","week: 17083<br />count:    72<br />package: assertr","week: 17090<br />count:   101<br />package: assertr","week: 17097<br />count:    92<br />package: assertr","week: 17104<br />count:   118<br />package: assertr","week: 17111<br />count:    97<br />package: assertr","week: 17118<br />count:   140<br />package: assertr","week: 17125<br />count:    95<br />package: assertr","week: 17132<br />count:   117<br />package: assertr","week: 17139<br />count:   124<br />package: assertr","week: 17146<br />count:   117<br />package: assertr","week: 17153<br />count:    90<br />package: assertr","week: 17160<br />count:    48<br />package: assertr","week: 17167<br />count:    81<br />package: assertr","week: 17174<br />count:    72<br />package: assertr","week: 17181<br />count:    81<br />package: assertr","week: 17188<br />count:   181<br />package: assertr","week: 17195<br />count:   199<br />package: assertr","week: 17202<br />count:   196<br />package: assertr","week: 17209<br />count:   143<br />package: assertr","week: 17216<br />count:    85<br />package: assertr","week: 17223<br />count:   136<br />package: assertr","week: 17230<br />count:    78<br />package: assertr","week: 17237<br />count:   891<br />package: assertr","week: 17244<br />count:   911<br />package: assertr","week: 17251<br />count:   196<br />package: assertr","week: 17258<br />count:   318<br />package: assertr","week: 17265<br />count:   275<br />package: assertr","week: 17272<br />count:   209<br />package: assertr","week: 17279<br />count:   264<br />package: assertr","week: 17286<br />count:   153<br />package: assertr","week: 17293<br />count:   158<br />package: assertr","week: 17300<br />count:   175<br />package: assertr"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(196,154,0,1)","dash":"solid"},"hoveron":"points","name":"assertr","legendgroup":"assertr","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1451779200000,1452384000000,1452988800000,1453593600000,1454198400000,1454803200000,1455408000000,1456012800000,1456617600000,1457222400000,1457827200000,1458432000000,1459036800000,1459641600000,1460246400000,1460851200000,1461456000000,1462060800000,1462665600000,1463270400000,1463875200000,1464480000000,1465084800000,1465689600000,1466294400000,1466899200000,1467504000000,1468108800000,1468713600000,1469318400000,1469923200000,1470528000000,1471132800000,1471737600000,1472342400000,1472947200000,1473552000000,1474156800000,1474761600000,1475366400000,1475971200000,1476576000000,1477180800000,1477785600000,1478390400000,1478995200000,1479600000000,1480204800000,1480809600000,1481414400000,1482019200000,1482624000000,1483228800000,1483833600000,1484438400000,1485043200000,1485648000000,1486252800000,1486857600000,1487462400000,1488067200000,1488672000000,1489276800000,1489881600000,1490486400000,1491091200000,1491696000000,1492300800000,1492905600000,1493510400000,1494115200000,1494720000000],"y":[15064,16660,18338,20076,15540,17290,17990,15906,15863,15242,15856,14903,15164,15480,15681,15906,15433,17450,20661,20864,20220,15859,19670,18269,19727,19925,18843,16135,18892,18048,16618,15293,16942,22386,21321,22224,29322,29092,30875,31900,30811,45362,41960,49416,55711,77584,62759,66935,62023,54248,40880,26792,50939,57672,81914,81071,86267,85307,96585,81074,76993,84489,73183,87438,77160,31478,55562,60671,54982,45852,45617,71401],"text":["week: 16803<br />count: 15064<br />package: assertthat","week: 16810<br />count: 16660<br />package: assertthat","week: 16817<br />count: 18338<br />package: assertthat","week: 16824<br />count: 20076<br />package: assertthat","week: 16831<br />count: 15540<br />package: assertthat","week: 16838<br />count: 17290<br />package: assertthat","week: 16845<br />count: 17990<br />package: assertthat","week: 16852<br />count: 15906<br />package: assertthat","week: 16859<br />count: 15863<br />package: assertthat","week: 16866<br />count: 15242<br />package: assertthat","week: 16873<br />count: 15856<br />package: assertthat","week: 16880<br />count: 14903<br />package: assertthat","week: 16887<br />count: 15164<br />package: assertthat","week: 16894<br />count: 15480<br />package: assertthat","week: 16901<br />count: 15681<br />package: assertthat","week: 16908<br />count: 15906<br />package: assertthat","week: 16915<br />count: 15433<br />package: assertthat","week: 16922<br />count: 17450<br />package: assertthat","week: 16929<br />count: 20661<br />package: assertthat","week: 16936<br />count: 20864<br />package: assertthat","week: 16943<br />count: 20220<br />package: assertthat","week: 16950<br />count: 15859<br />package: assertthat","week: 16957<br />count: 19670<br />package: assertthat","week: 16964<br />count: 18269<br />package: assertthat","week: 16971<br />count: 19727<br />package: assertthat","week: 16978<br />count: 19925<br />package: assertthat","week: 16985<br />count: 18843<br />package: assertthat","week: 16992<br />count: 16135<br />package: assertthat","week: 16999<br />count: 18892<br />package: assertthat","week: 17006<br />count: 18048<br />package: assertthat","week: 17013<br />count: 16618<br />package: assertthat","week: 17020<br />count: 15293<br />package: assertthat","week: 17027<br />count: 16942<br />package: assertthat","week: 17034<br />count: 22386<br />package: assertthat","week: 17041<br />count: 21321<br />package: assertthat","week: 17048<br />count: 22224<br />package: assertthat","week: 17055<br />count: 29322<br />package: assertthat","week: 17062<br />count: 29092<br />package: assertthat","week: 17069<br />count: 30875<br />package: assertthat","week: 17076<br />count: 31900<br />package: assertthat","week: 17083<br />count: 30811<br />package: assertthat","week: 17090<br />count: 45362<br />package: assertthat","week: 17097<br />count: 41960<br />package: assertthat","week: 17104<br />count: 49416<br />package: assertthat","week: 17111<br />count: 55711<br />package: assertthat","week: 17118<br />count: 77584<br />package: assertthat","week: 17125<br />count: 62759<br />package: assertthat","week: 17132<br />count: 66935<br />package: assertthat","week: 17139<br />count: 62023<br />package: assertthat","week: 17146<br />count: 54248<br />package: assertthat","week: 17153<br />count: 40880<br />package: assertthat","week: 17160<br />count: 26792<br />package: assertthat","week: 17167<br />count: 50939<br />package: assertthat","week: 17174<br />count: 57672<br />package: assertthat","week: 17181<br />count: 81914<br />package: assertthat","week: 17188<br />count: 81071<br />package: assertthat","week: 17195<br />count: 86267<br />package: assertthat","week: 17202<br />count: 85307<br />package: assertthat","week: 17209<br />count: 96585<br />package: assertthat","week: 17216<br />count: 81074<br />package: assertthat","week: 17223<br />count: 76993<br />package: assertthat","week: 17230<br />count: 84489<br />package: assertthat","week: 17237<br />count: 73183<br />package: assertthat","week: 17244<br />count: 87438<br />package: assertthat","week: 17251<br />count: 77160<br />package: assertthat","week: 17258<br />count: 31478<br />package: assertthat","week: 17265<br />count: 55562<br />package: assertthat","week: 17272<br />count: 60671<br />package: assertthat","week: 17279<br />count: 54982<br />package: assertthat","week: 17286<br />count: 45852<br />package: assertthat","week: 17293<br />count: 45617<br />package: assertthat","week: 17300<br />count: 71401<br />package: assertthat"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(83,180,0,1)","dash":"solid"},"hoveron":"points","name":"assertthat","legendgroup":"assertthat","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1451779200000,1452384000000,1452988800000,1453593600000,1454198400000,1454803200000,1455408000000,1456012800000,1456617600000,1457222400000,1457827200000,1458432000000,1459036800000,1459641600000,1460246400000,1460851200000,1461456000000,1462060800000,1462665600000,1463270400000,1463875200000,1464480000000,1465084800000,1465689600000,1466294400000,1466899200000,1467504000000,1468108800000,1468713600000,1469318400000,1469923200000,1470528000000,1471132800000,1471737600000,1472342400000,1472947200000,1473552000000,1474156800000,1474761600000,1475366400000,1475971200000,1476576000000,1477180800000,1477785600000,1478390400000,1478995200000,1479600000000,1480204800000,1480809600000,1481414400000,1482019200000,1482624000000,1483228800000,1483833600000,1484438400000,1485043200000,1485648000000,1486252800000,1486857600000,1487462400000,1488067200000,1488672000000,1489276800000,1489881600000,1490486400000,1491091200000,1491696000000,1492300800000,1492905600000,1493510400000,1494115200000,1494720000000],"y":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"text":["week: 16803<br />count:     0<br />package: breakfast","week: 16810<br />count:     0<br />package: breakfast","week: 16817<br />count:     0<br />package: breakfast","week: 16824<br />count:     0<br />package: breakfast","week: 16831<br />count:     0<br />package: breakfast","week: 16838<br />count:     0<br />package: breakfast","week: 16845<br />count:     0<br />package: breakfast","week: 16852<br />count:     0<br />package: breakfast","week: 16859<br />count:     0<br />package: breakfast","week: 16866<br />count:     0<br />package: breakfast","week: 16873<br />count:     0<br />package: breakfast","week: 16880<br />count:     0<br />package: breakfast","week: 16887<br />count:     0<br />package: breakfast","week: 16894<br />count:     0<br />package: breakfast","week: 16901<br />count:     0<br />package: breakfast","week: 16908<br />count:     0<br />package: breakfast","week: 16915<br />count:     0<br />package: breakfast","week: 16922<br />count:     0<br />package: breakfast","week: 16929<br />count:     0<br />package: breakfast","week: 16936<br />count:     0<br />package: breakfast","week: 16943<br />count:     0<br />package: breakfast","week: 16950<br />count:     0<br />package: breakfast","week: 16957<br />count:     0<br />package: breakfast","week: 16964<br />count:     0<br />package: breakfast","week: 16971<br />count:     0<br />package: breakfast","week: 16978<br />count:     0<br />package: breakfast","week: 16985<br />count:     0<br />package: breakfast","week: 16992<br />count:     0<br />package: breakfast","week: 16999<br />count:     0<br />package: breakfast","week: 17006<br />count:     0<br />package: breakfast","week: 17013<br />count:     0<br />package: breakfast","week: 17020<br />count:     0<br />package: breakfast","week: 17027<br />count:     0<br />package: breakfast","week: 17034<br />count:     0<br />package: breakfast","week: 17041<br />count:     0<br />package: breakfast","week: 17048<br />count:     0<br />package: breakfast","week: 17055<br />count:     0<br />package: breakfast","week: 17062<br />count:     0<br />package: breakfast","week: 17069<br />count:     0<br />package: breakfast","week: 17076<br />count:     0<br />package: breakfast","week: 17083<br />count:     0<br />package: breakfast","week: 17090<br />count:     0<br />package: breakfast","week: 17097<br />count:     0<br />package: breakfast","week: 17104<br />count:     0<br />package: breakfast","week: 17111<br />count:     0<br />package: breakfast","week: 17118<br />count:     0<br />package: breakfast","week: 17125<br />count:     0<br />package: breakfast","week: 17132<br />count:     0<br />package: breakfast","week: 17139<br />count:     0<br />package: breakfast","week: 17146<br />count:     0<br />package: breakfast","week: 17153<br />count:     0<br />package: breakfast","week: 17160<br />count:     0<br />package: breakfast","week: 17167<br />count:     0<br />package: breakfast","week: 17174<br />count:     0<br />package: breakfast","week: 17181<br />count:     0<br />package: breakfast","week: 17188<br />count:     0<br />package: breakfast","week: 17195<br />count:     0<br />package: breakfast","week: 17202<br />count:     0<br />package: breakfast","week: 17209<br />count:     0<br />package: breakfast","week: 17216<br />count:     0<br />package: breakfast","week: 17223<br />count:     0<br />package: breakfast","week: 17230<br />count:     0<br />package: breakfast","week: 17237<br />count:     0<br />package: breakfast","week: 17244<br />count:     0<br />package: breakfast","week: 17251<br />count:     0<br />package: breakfast","week: 17258<br />count:     0<br />package: breakfast","week: 17265<br />count:     0<br />package: breakfast","week: 17272<br />count:     0<br />package: breakfast","week: 17279<br />count:     0<br />package: breakfast","week: 17286<br />count:     0<br />package: breakfast","week: 17293<br />count:     0<br />package: breakfast","week: 17300<br />count:     0<br />package: breakfast"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,192,148,1)","dash":"solid"},"hoveron":"points","name":"breakfast","legendgroup":"breakfast","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1451779200000,1452384000000,1452988800000,1453593600000,1454198400000,1454803200000,1455408000000,1456012800000,1456617600000,1457222400000,1457827200000,1458432000000,1459036800000,1459641600000,1460246400000,1460851200000,1461456000000,1462060800000,1462665600000,1463270400000,1463875200000,1464480000000,1465084800000,1465689600000,1466294400000,1466899200000,1467504000000,1468108800000,1468713600000,1469318400000,1469923200000,1470528000000,1471132800000,1471737600000,1472342400000,1472947200000,1473552000000,1474156800000,1474761600000,1475366400000,1475971200000,1476576000000,1477180800000,1477785600000,1478390400000,1478995200000,1479600000000,1480204800000,1480809600000,1481414400000,1482019200000,1482624000000,1483228800000,1483833600000,1484438400000,1485043200000,1485648000000,1486252800000,1486857600000,1487462400000,1488067200000,1488672000000,1489276800000,1489881600000,1490486400000,1491091200000,1491696000000,1492300800000,1492905600000,1493510400000,1494115200000,1494720000000],"y":[880,873,1108,1947,1655,1563,3996,1998,1880,2000,1767,1178,1269,1556,1857,1502,1362,1349,1456,1597,1110,903,2277,1859,1465,2526,2051,1277,1340,1335,1021,1079,1081,1153,1004,1081,1184,1253,1227,1223,1239,1558,1405,2581,2789,2490,2164,2214,1974,1647,1380,965,16111,19504,22671,23198,23353,23087,22655,22986,19836,22432,22181,22231,21935,20805,18169,19425,22638,19087,19881,19033],"text":["week: 16803<br />count:   880<br />package: checkmate","week: 16810<br />count:   873<br />package: checkmate","week: 16817<br />count:  1108<br />package: checkmate","week: 16824<br />count:  1947<br />package: checkmate","week: 16831<br />count:  1655<br />package: checkmate","week: 16838<br />count:  1563<br />package: checkmate","week: 16845<br />count:  3996<br />package: checkmate","week: 16852<br />count:  1998<br />package: checkmate","week: 16859<br />count:  1880<br />package: checkmate","week: 16866<br />count:  2000<br />package: checkmate","week: 16873<br />count:  1767<br />package: checkmate","week: 16880<br />count:  1178<br />package: checkmate","week: 16887<br />count:  1269<br />package: checkmate","week: 16894<br />count:  1556<br />package: checkmate","week: 16901<br />count:  1857<br />package: checkmate","week: 16908<br />count:  1502<br />package: checkmate","week: 16915<br />count:  1362<br />package: checkmate","week: 16922<br />count:  1349<br />package: checkmate","week: 16929<br />count:  1456<br />package: checkmate","week: 16936<br />count:  1597<br />package: checkmate","week: 16943<br />count:  1110<br />package: checkmate","week: 16950<br />count:   903<br />package: checkmate","week: 16957<br />count:  2277<br />package: checkmate","week: 16964<br />count:  1859<br />package: checkmate","week: 16971<br />count:  1465<br />package: checkmate","week: 16978<br />count:  2526<br />package: checkmate","week: 16985<br />count:  2051<br />package: checkmate","week: 16992<br />count:  1277<br />package: checkmate","week: 16999<br />count:  1340<br />package: checkmate","week: 17006<br />count:  1335<br />package: checkmate","week: 17013<br />count:  1021<br />package: checkmate","week: 17020<br />count:  1079<br />package: checkmate","week: 17027<br />count:  1081<br />package: checkmate","week: 17034<br />count:  1153<br />package: checkmate","week: 17041<br />count:  1004<br />package: checkmate","week: 17048<br />count:  1081<br />package: checkmate","week: 17055<br />count:  1184<br />package: checkmate","week: 17062<br />count:  1253<br />package: checkmate","week: 17069<br />count:  1227<br />package: checkmate","week: 17076<br />count:  1223<br />package: checkmate","week: 17083<br />count:  1239<br />package: checkmate","week: 17090<br />count:  1558<br />package: checkmate","week: 17097<br />count:  1405<br />package: checkmate","week: 17104<br />count:  2581<br />package: checkmate","week: 17111<br />count:  2789<br />package: checkmate","week: 17118<br />count:  2490<br />package: checkmate","week: 17125<br />count:  2164<br />package: checkmate","week: 17132<br />count:  2214<br />package: checkmate","week: 17139<br />count:  1974<br />package: checkmate","week: 17146<br />count:  1647<br />package: checkmate","week: 17153<br />count:  1380<br />package: checkmate","week: 17160<br />count:   965<br />package: checkmate","week: 17167<br />count: 16111<br />package: checkmate","week: 17174<br />count: 19504<br />package: checkmate","week: 17181<br />count: 22671<br />package: checkmate","week: 17188<br />count: 23198<br />package: checkmate","week: 17195<br />count: 23353<br />package: checkmate","week: 17202<br />count: 23087<br />package: checkmate","week: 17209<br />count: 22655<br />package: checkmate","week: 17216<br />count: 22986<br />package: checkmate","week: 17223<br />count: 19836<br />package: checkmate","week: 17230<br />count: 22432<br />package: checkmate","week: 17237<br />count: 22181<br />package: checkmate","week: 17244<br />count: 22231<br />package: checkmate","week: 17251<br />count: 21935<br />package: checkmate","week: 17258<br />count: 20805<br />package: checkmate","week: 17265<br />count: 18169<br />package: checkmate","week: 17272<br />count: 19425<br />package: checkmate","week: 17279<br />count: 22638<br />package: checkmate","week: 17286<br />count: 19087<br />package: checkmate","week: 17293<br />count: 19881<br />package: checkmate","week: 17300<br />count: 19033<br />package: checkmate"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,182,235,1)","dash":"solid"},"hoveron":"points","name":"checkmate","legendgroup":"checkmate","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1451779200000,1452384000000,1452988800000,1453593600000,1454198400000,1454803200000,1455408000000,1456012800000,1456617600000,1457222400000,1457827200000,1458432000000,1459036800000,1459641600000,1460246400000,1460851200000,1461456000000,1462060800000,1462665600000,1463270400000,1463875200000,1464480000000,1465084800000,1465689600000,1466294400000,1466899200000,1467504000000,1468108800000,1468713600000,1469318400000,1469923200000,1470528000000,1471132800000,1471737600000,1472342400000,1472947200000,1473552000000,1474156800000,1474761600000,1475366400000,1475971200000,1476576000000,1477180800000,1477785600000,1478390400000,1478995200000,1479600000000,1480204800000,1480809600000,1481414400000,1482019200000,1482624000000,1483228800000,1483833600000,1484438400000,1485043200000,1485648000000,1486252800000,1486857600000,1487462400000,1488067200000,1488672000000,1489276800000,1489881600000,1490486400000,1491091200000,1491696000000,1492300800000,1492905600000,1493510400000,1494115200000,1494720000000],"y":[50,65,82,94,47,58,82,78,83,56,49,48,60,63,67,46,54,76,167,108,89,115,80,44,53,38,61,36,51,55,28,51,26,62,20,47,38,62,45,37,43,86,83,82,55,129,45,89,76,42,119,33,114,40,39,84,59,50,58,51,69,93,80,58,74,185,92,65,81,44,55,53],"text":["week: 16803<br />count:    50<br />package: ensurer","week: 16810<br />count:    65<br />package: ensurer","week: 16817<br />count:    82<br />package: ensurer","week: 16824<br />count:    94<br />package: ensurer","week: 16831<br />count:    47<br />package: ensurer","week: 16838<br />count:    58<br />package: ensurer","week: 16845<br />count:    82<br />package: ensurer","week: 16852<br />count:    78<br />package: ensurer","week: 16859<br />count:    83<br />package: ensurer","week: 16866<br />count:    56<br />package: ensurer","week: 16873<br />count:    49<br />package: ensurer","week: 16880<br />count:    48<br />package: ensurer","week: 16887<br />count:    60<br />package: ensurer","week: 16894<br />count:    63<br />package: ensurer","week: 16901<br />count:    67<br />package: ensurer","week: 16908<br />count:    46<br />package: ensurer","week: 16915<br />count:    54<br />package: ensurer","week: 16922<br />count:    76<br />package: ensurer","week: 16929<br />count:   167<br />package: ensurer","week: 16936<br />count:   108<br />package: ensurer","week: 16943<br />count:    89<br />package: ensurer","week: 16950<br />count:   115<br />package: ensurer","week: 16957<br />count:    80<br />package: ensurer","week: 16964<br />count:    44<br />package: ensurer","week: 16971<br />count:    53<br />package: ensurer","week: 16978<br />count:    38<br />package: ensurer","week: 16985<br />count:    61<br />package: ensurer","week: 16992<br />count:    36<br />package: ensurer","week: 16999<br />count:    51<br />package: ensurer","week: 17006<br />count:    55<br />package: ensurer","week: 17013<br />count:    28<br />package: ensurer","week: 17020<br />count:    51<br />package: ensurer","week: 17027<br />count:    26<br />package: ensurer","week: 17034<br />count:    62<br />package: ensurer","week: 17041<br />count:    20<br />package: ensurer","week: 17048<br />count:    47<br />package: ensurer","week: 17055<br />count:    38<br />package: ensurer","week: 17062<br />count:    62<br />package: ensurer","week: 17069<br />count:    45<br />package: ensurer","week: 17076<br />count:    37<br />package: ensurer","week: 17083<br />count:    43<br />package: ensurer","week: 17090<br />count:    86<br />package: ensurer","week: 17097<br />count:    83<br />package: ensurer","week: 17104<br />count:    82<br />package: ensurer","week: 17111<br />count:    55<br />package: ensurer","week: 17118<br />count:   129<br />package: ensurer","week: 17125<br />count:    45<br />package: ensurer","week: 17132<br />count:    89<br />package: ensurer","week: 17139<br />count:    76<br />package: ensurer","week: 17146<br />count:    42<br />package: ensurer","week: 17153<br />count:   119<br />package: ensurer","week: 17160<br />count:    33<br />package: ensurer","week: 17167<br />count:   114<br />package: ensurer","week: 17174<br />count:    40<br />package: ensurer","week: 17181<br />count:    39<br />package: ensurer","week: 17188<br />count:    84<br />package: ensurer","week: 17195<br />count:    59<br />package: ensurer","week: 17202<br />count:    50<br />package: ensurer","week: 17209<br />count:    58<br />package: ensurer","week: 17216<br />count:    51<br />package: ensurer","week: 17223<br />count:    69<br />package: ensurer","week: 17230<br />count:    93<br />package: ensurer","week: 17237<br />count:    80<br />package: ensurer","week: 17244<br />count:    58<br />package: ensurer","week: 17251<br />count:    74<br />package: ensurer","week: 17258<br />count:   185<br />package: ensurer","week: 17265<br />count:    92<br />package: ensurer","week: 17272<br />count:    65<br />package: ensurer","week: 17279<br />count:    81<br />package: ensurer","week: 17286<br />count:    44<br />package: ensurer","week: 17293<br />count:    55<br />package: ensurer","week: 17300<br />count:    53<br />package: ensurer"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(165,138,255,1)","dash":"solid"},"hoveron":"points","name":"ensurer","legendgroup":"ensurer","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1451779200000,1452384000000,1452988800000,1453593600000,1454198400000,1454803200000,1455408000000,1456012800000,1456617600000,1457222400000,1457827200000,1458432000000,1459036800000,1459641600000,1460246400000,1460851200000,1461456000000,1462060800000,1462665600000,1463270400000,1463875200000,1464480000000,1465084800000,1465689600000,1466294400000,1466899200000,1467504000000,1468108800000,1468713600000,1469318400000,1469923200000,1470528000000,1471132800000,1471737600000,1472342400000,1472947200000,1473552000000,1474156800000,1474761600000,1475366400000,1475971200000,1476576000000,1477180800000,1477785600000,1478390400000,1478995200000,1479600000000,1480204800000,1480809600000,1481414400000,1482019200000,1482624000000,1483228800000,1483833600000,1484438400000,1485043200000,1485648000000,1486252800000,1486857600000,1487462400000,1488067200000,1488672000000,1489276800000,1489881600000,1490486400000,1491091200000,1491696000000,1492300800000,1492905600000,1493510400000,1494115200000,1494720000000],"y":[93,89,88,108,41,45,64,46,73,25,19,49,140,51,55,111,60,58,50,48,55,64,35,43,105,171,124,74,131,73,83,53,48,68,58,62,43,70,76,81,98,81,59,77,96,102,52,104,81,61,66,55,66,55,67,93,108,94,120,80,52,79,106,100,81,228,310,169,200,126,128,114],"text":["week: 16803<br />count:    93<br />package: validate","week: 16810<br />count:    89<br />package: validate","week: 16817<br />count:    88<br />package: validate","week: 16824<br />count:   108<br />package: validate","week: 16831<br />count:    41<br />package: validate","week: 16838<br />count:    45<br />package: validate","week: 16845<br />count:    64<br />package: validate","week: 16852<br />count:    46<br />package: validate","week: 16859<br />count:    73<br />package: validate","week: 16866<br />count:    25<br />package: validate","week: 16873<br />count:    19<br />package: validate","week: 16880<br />count:    49<br />package: validate","week: 16887<br />count:   140<br />package: validate","week: 16894<br />count:    51<br />package: validate","week: 16901<br />count:    55<br />package: validate","week: 16908<br />count:   111<br />package: validate","week: 16915<br />count:    60<br />package: validate","week: 16922<br />count:    58<br />package: validate","week: 16929<br />count:    50<br />package: validate","week: 16936<br />count:    48<br />package: validate","week: 16943<br />count:    55<br />package: validate","week: 16950<br />count:    64<br />package: validate","week: 16957<br />count:    35<br />package: validate","week: 16964<br />count:    43<br />package: validate","week: 16971<br />count:   105<br />package: validate","week: 16978<br />count:   171<br />package: validate","week: 16985<br />count:   124<br />package: validate","week: 16992<br />count:    74<br />package: validate","week: 16999<br />count:   131<br />package: validate","week: 17006<br />count:    73<br />package: validate","week: 17013<br />count:    83<br />package: validate","week: 17020<br />count:    53<br />package: validate","week: 17027<br />count:    48<br />package: validate","week: 17034<br />count:    68<br />package: validate","week: 17041<br />count:    58<br />package: validate","week: 17048<br />count:    62<br />package: validate","week: 17055<br />count:    43<br />package: validate","week: 17062<br />count:    70<br />package: validate","week: 17069<br />count:    76<br />package: validate","week: 17076<br />count:    81<br />package: validate","week: 17083<br />count:    98<br />package: validate","week: 17090<br />count:    81<br />package: validate","week: 17097<br />count:    59<br />package: validate","week: 17104<br />count:    77<br />package: validate","week: 17111<br />count:    96<br />package: validate","week: 17118<br />count:   102<br />package: validate","week: 17125<br />count:    52<br />package: validate","week: 17132<br />count:   104<br />package: validate","week: 17139<br />count:    81<br />package: validate","week: 17146<br />count:    61<br />package: validate","week: 17153<br />count:    66<br />package: validate","week: 17160<br />count:    55<br />package: validate","week: 17167<br />count:    66<br />package: validate","week: 17174<br />count:    55<br />package: validate","week: 17181<br />count:    67<br />package: validate","week: 17188<br />count:    93<br />package: validate","week: 17195<br />count:   108<br />package: validate","week: 17202<br />count:    94<br />package: validate","week: 17209<br />count:   120<br />package: validate","week: 17216<br />count:    80<br />package: validate","week: 17223<br />count:    52<br />package: validate","week: 17230<br />count:    79<br />package: validate","week: 17237<br />count:   106<br />package: validate","week: 17244<br />count:   100<br />package: validate","week: 17251<br />count:    81<br />package: validate","week: 17258<br />count:   228<br />package: validate","week: 17265<br />count:   310<br />package: validate","week: 17272<br />count:   169<br />package: validate","week: 17279<br />count:   200<br />package: validate","week: 17286<br />count:   126<br />package: validate","week: 17293<br />count:   128<br />package: validate","week: 17300<br />count:   114<br />package: validate"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(251,97,215,1)","dash":"solid"},"hoveron":"points","name":"validate","legendgroup":"validate","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":60.6392694063927},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"type":"linear","autorange":false,"tickmode":"array","range":[1449632160000,1496867040000],"ticktext":["2016-01","2016-07","2017-01"],"tickvals":[1451606400000,1467331200000,1483228800000],"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":"week","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"type":"linear","autorange":false,"tickmode":"array","range":[-4829.25,101414.25],"ticktext":["0","25000","50000","75000","100000"],"tickvals":[0,25000,50000,75000,100000],"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":"count","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.93503937007874},"annotations":[{"text":"package","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest"},"source":"A","attrs":{"c0ca6ec89fae":{"x":{},"y":{},"colour":{},"type":"ggplotly"}},"cur_data":"c0ca6ec89fae","visdat":{"c0ca6ec89fae":["function (y) ","x"]},"config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1}},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":{"render":[{"code":"function(el, x) { var ctConfig = crosstalk.var('plotlyCrosstalkOpts').set({\"on\":\"plotly_click\",\"persistent\":false,\"dynamic\":false,\"selectize\":false,\"opacityDim\":0.2,\"selected\":{\"opacity\":1}}); }","data":null}]}}</script>
+</div>
+<div id="total-downloads" class="section level2">
+<h2>Total downloads</h2>
+<pre class="r"><code>daily_downloads %&gt;%
+  group_by(package) %&gt;%
+  summarise(count = sum(count))</code></pre>
+<pre><code>## # A tibble: 7 × 2
+##      package   count
+##        &lt;chr&gt;   &lt;dbl&gt;
+## 1  assertive   19108
+## 2    assertr    9325
+## 3 assertthat 2824490
+## 4  breakfast       0
+## 5  checkmate  518520
+## 6    ensurer    4844
+## 7   validate    6216</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
