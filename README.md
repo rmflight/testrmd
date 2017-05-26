@@ -49,3 +49,7 @@ The validation frameworks that most easily return errors if there is a problem i
 * `ensurer`
 * `assertive`
 * `checkmate`
+
+## Example Output
+
+[Here](https://ropenscilabs.github.io/testrmd/cranlogs.html) is an example of the HTML output that gets generated.
