@@ -22,23 +22,33 @@ init <- function() {
     error = error
   )
 
-  reset_counts()
+  reset_doc_counts()
   init_log_file()
 }
 
 increment_count <- function(type) {
   (current_chunk_counts[[type]] <- current_chunk_counts[[type]] + 1L)
+  (current_doc_counts[[type]] <- current_doc_counts[[type]] + 1L)
 }
-reset_counts <- function() {
+reset_chunk_counts <- function() {
   current_chunk_counts$error <- 0
   current_chunk_counts$pass <- 0
 }
-get_count <- function(type) {
+reset_doc_counts <- function() {
+  reset_chunk_counts()
+  current_doc_counts$error <- 0
+  current_doc_counts$pass <- 0
+}
+get_chunk_count <- function(type) {
   current_chunk_counts[[type]]
+}
+get_doc_count <- function(type) {
+  current_doc_counts[[type]]
 }
 
 current_chunk_counts <- new.env(parent = emptyenv())
-reset_counts()
+current_doc_counts <- new.env(parent = emptyenv())
+reset_doc_counts()
 
 #' @export
 styles <- function() {
@@ -89,24 +99,24 @@ knitr_chunk_hook <- function(x, options) {
     return(x)
   }
 
-  on.exit(reset_counts(), add = TRUE)
+  on.exit(reset_chunk_counts(), add = TRUE)
 
   if (options$eval == FALSE) {
     return("")
   }
 
-  pass <- get_count("error") == 0
+  pass <- get_chunk_count("error") == 0
 
   data <- list(
     chunk_id = sprintf("testrmd-chunk-%07d", sample.int(9999999, 1)),
     button_class = "default",
-    bootstrap_class = if (pass) "default" else "danger",
+    bootstrap_class = if (pass) "info" else "danger",
     status = if (pass) "pass" else "fail",
     pass = pass,
-    pass_count = get_count("pass"),
-    error_count = get_count("error"),
+    pass_count = get_chunk_count("pass"),
+    error_count = get_chunk_count("error"),
     content = paste(x, collapse = "\n"),
-    noun = if (get_count("error") == 1) "test" else "tests"
+    noun = if (get_chunk_count("error") == 1) "test" else "tests"
   )
   render_template("chunk", data)
 }
