@@ -4,7 +4,7 @@ output:
   html_document:
     keep_md: true
 params:
-  packages: assertr, assertthat, ensurer, assertive, checkmate, validate, breakfast
+  packages: assertr, assertthat, ensurer, assertive, checkmate, validate
   start: !r as.Date("2016-01-01")
   end: !r as.Date(Sys.time()) - 1
 ---
