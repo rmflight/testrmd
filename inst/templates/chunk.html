@@ -1,0 +1,13 @@
+<!--html_preserve-->
+<div class="testrmd-section testrmd-section-{{status}} panel panel-{{bootstrap_class}}">
+  <div class="panel-heading" data-toggle="collapse" data-target="#{{chunk_id}}" aria-expanded="{{#pass}}false{{/pass}}{{^pass}}true{{/pass}}" aria-controls="{{chunk_id}}">
+    <h4 class="panel-title">
+      {{#pass}}Tests passed{{/pass}}
+      {{^pass}}{{error_count}} tests failed{{/pass}}
+    </h4>
+  </div>
+  <div id="{{chunk_id}}" class="panel-body panel-collapse {{#pass}}collapse{{/pass}} {{^pass}}in{{/pass}}">
+<!--/html_preserve-->
+{{content}}
+  </div>
+</div>
