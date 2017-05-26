@@ -25,7 +25,7 @@ To pass this parameter to your test chunks, you use `eval = params$test`.
 #### chunk using `params$test`
 
 <!--html_preserve-->
-<pre>```{r stopifnot_parameterized, test = TRUE, eval= params$test}
+<pre>```{r stopifnot_parameterized, test = TRUE, eval = params$test}
 counts <- c(1, 2, 3, 4.5)
 stopifnot(
   is.numeric(counts),
