@@ -1,0 +1,55 @@
+---
+title: "CRAN log processing"
+output: html_document
+params:
+  packages: knitr, ggplot2
+  start: !r as.Date("2017-01-01")
+  end: !r as.Date(Sys.time()) - 1
+---
+
+This report shows downloads of the CRAN packages `r params$packages`.
+
+```{r setup,echo=FALSE}
+testrmd::init()
+testrmd::styles()
+library(cranlogs)
+
+packages <- strsplit(params$packages, ",\\s*")[[1]]
+```
+
+
+```{r test=TRUE}
+library(testthat)
+
+expect_true(params$start < params$end)
+expect_gt(length(packages), 0)
+```
+
+```{r echo=FALSE}
+daily_downloads <- cran_downloads(packages, from = params$start, to = params$end)
+```
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r test=TRUE}
+expect_true(FALSE)
+```
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

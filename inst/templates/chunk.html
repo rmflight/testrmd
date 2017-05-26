@@ -1,13 +1,15 @@
 <!--html_preserve-->
-<div class="testrmd-section testrmd-section-{{status}} panel panel-{{bootstrap_class}}">
-  <div class="panel-heading" data-toggle="collapse" data-target="#{{chunk_id}}" aria-expanded="{{#pass}}false{{/pass}}{{^pass}}true{{/pass}}" aria-controls="{{chunk_id}}">
-    <h4 class="panel-title">
-      {{#pass}}Tests passed{{/pass}}
-      {{^pass}}{{error_count}} tests failed{{/pass}}
-    </h4>
-  </div>
-  <div id="{{chunk_id}}" class="panel-body panel-collapse {{#pass}}collapse{{/pass}} {{^pass}}in{{/pass}}">
-<!--/html_preserve-->
-{{content}}
+<div class="testrmd-badge-container-outer">
+  <div class="testrmd-badge-container-inner">
+    {{#pass}}
+      <span class="testrmd-badge label label-info" data-toggle="collapse" data-target="#{{chunk_id}}" aria-expanded="false" aria-controls="{{chunk_id}}">Tests passed</span>
+    {{/pass}}
+    {{^pass}}
+      <span class="testrmd-badge label label-danger" data-toggle="collapse" data-target="#{{chunk_id}}" aria-expanded="false" aria-controls="{{chunk_id}}">{{error_count}} {{noun}} failed</span>
+    {{/pass}}
   </div>
 </div>
+<div id="{{chunk_id}}" class="testrmd-chunk panel panel-{{bootstrap_class}} collapse"><div class="panel-body">
+<!--/html_preserve-->
+{{content}}
+</div></div>

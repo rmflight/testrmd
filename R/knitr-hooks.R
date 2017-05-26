@@ -98,7 +98,8 @@ knitr_chunk_hook <- function(x, options) {
     pass = pass,
     pass_count = get_count("pass"),
     error_count = get_count("error"),
-    content = paste(x, collapse = "\n")
+    content = paste(x, collapse = "\n"),
+    noun = if (get_count("error") == 1) "test" else "tests"
   )
   render_template("chunk", data)
 }
