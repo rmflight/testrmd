@@ -37,6 +37,10 @@ a variable is numeric:
     stopifnot(is.numeric(y))
     ```
 
+## Example Output
+
+[Here](https://ropenscilabs.github.io/testrmd/cranlogs.html) is an example of the HTML output that gets generated.
+
 ## Supported Frameworks
 
 `testrmd` supports any validation method that throws an error when a test fails. The following validation frameworks have been shown to easily return errors compatible with `testrmd`:
@@ -58,6 +62,3 @@ The following validation methods have not been confirmed to work with `testrmd` 
 * [`tester`](https://github.com/gastonstat/tester)
 * [`validate`](https://github.com/data-cleaning/validate)
 
-## Example Output
-
-[Here](https://ropenscilabs.github.io/testrmd/cranlogs.html) is an example of the HTML output that gets generated.
