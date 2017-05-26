@@ -38,7 +38,8 @@ a variable is numeric:
 
 ### Example Output
 
-[Here](https://ropenscilabs.github.io/testrmd/cranlogs.html) is an example of the HTML output that gets generated.
+The [default](https://ropenscilabs.github.io/testrmd/cranlogs_default.html) and [emoji](https://ropenscilabs.github.io/testrmd/cranlogs_emoji.html) examples of running
+an analysis using `cranlogs` are available.
 
 ### Supported Frameworks
 
