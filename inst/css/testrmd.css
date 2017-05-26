@@ -9,3 +9,24 @@
 .panel.testrmd-section-pass>.panel-heading {
   background: none;
 }
+
+.testrmd-badge-container-outer {
+  position: relative;
+  top: -2px;
+  height: 0px;
+}
+
+.testrmd-badge-container-inner {
+  position: absolute;
+  right: -126px;
+  width: 120px;
+}
+
+.testrmd-badge {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.testrmd-chunk .panel-body {
+  padding-bottom: 5.5px;
+}

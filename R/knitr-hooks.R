@@ -91,6 +91,10 @@ knitr_chunk_hook <- function(x, options) {
 
   on.exit(reset_counts(), add = TRUE)
 
+  if (options$eval == FALSE) {
+    return("")
+  }
+
   pass <- get_count("error") == 0
 
   data <- list(
@@ -101,7 +105,8 @@ knitr_chunk_hook <- function(x, options) {
     pass = pass,
     pass_count = get_count("pass"),
     error_count = get_count("error"),
-    content = paste(x, collapse = "\n")
+    content = paste(x, collapse = "\n"),
+    noun = if (get_count("error") == 1) "test" else "tests"
   )
   render_template("chunk", data)
 }
