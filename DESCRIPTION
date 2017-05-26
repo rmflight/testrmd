@@ -1,6 +1,6 @@
 Package: testrmd
 Title: Testing for R Markdown Chunks
-Version: 0.0.0.9000
+Version: 0.0.1.9000
 Authors@R: c(person(given = c("Robert", "M"), family = "Flight", email = "rflight79@gmail.com", role = c("aut", "cre")),
              person(given = "Joe", family = "Cheng", role = c("aut")),
              person(given = "Christopher", family = "Tull", role = c("aut")),
