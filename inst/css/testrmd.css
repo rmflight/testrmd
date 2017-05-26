@@ -1,6 +1,11 @@
-.testrmd-section {
-  padding: 10px;
+.testrmd-section .panel-heading h4 {
+  font-size: 13px;
 }
-.testrmd-section.pass {
-  /*background-color: #CCFFCC;*/
+
+.testrmd-section-pass .panel-heading h4 {
+  font-weight: normal;
+}
+
+.panel.testrmd-section-pass>.panel-heading {
+  background: none;
 }
