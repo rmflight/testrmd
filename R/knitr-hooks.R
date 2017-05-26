@@ -1,3 +1,5 @@
+test_options <- new.env(parent = emptyenv())
+
 #' Initialize testrmd
 #'
 #' Call from the setup chunk of an Rmd document to enable the `test=TRUE` chunk
@@ -5,7 +7,8 @@
 #' @export
 #'
 #' @include logging_errors.R
-init <- function(summary = TRUE) {
+init <- function(summary = TRUE, theme = c("default", "emoji")) {
+  theme <- match.arg(theme)
   knitr::opts_hooks$set(
     error = function(options) {
       if (isTRUE(options$test)) {
@@ -25,7 +28,8 @@ init <- function(summary = TRUE) {
   )
 
   reset_doc_counts()
-  current_doc_counts$summary <- summary
+  test_options$summary <- summary
+  test_options$theme <- theme
   init_log_file()
 }
 
@@ -64,7 +68,9 @@ styles <- function() {
 }
 
 render_template <- function(template_name, data) {
-  path <- system.file("templates", paste0(template_name, ".html"), package = "testrmd")
+  theme <- test_options$theme
+
+  path <- system.file("templates", theme, paste0(template_name, ".html"), package = "testrmd")
   if (!nzchar(path)) {
     stop("Template ", template_name, " not found")
   }
@@ -92,7 +98,7 @@ knitr_document_hook <- function(old_hook) {
     error_count <- get_doc_count("error")
     pass <- error_count == 0
 
-    if (pass || !isTRUE(current_doc_counts$summary)) {
+    if (pass || !isTRUE(test_options$summary)) {
       return(old_hook(x))
     }
 
