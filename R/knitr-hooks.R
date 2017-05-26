@@ -89,7 +89,7 @@ knitr_chunk_hook <- function(x, options) {
   data <- list(
     chunk_id = sprintf("testrmd-chunk-%07d", sample.int(9999999, 1)),
     button_class = "default",
-    bootstrap_class = if (pass) "success" else "danger",
+    bootstrap_class = if (pass) "default" else "danger",
     status = if (pass) "pass" else "fail",
     pass = pass,
     pass_count = get_count("pass"),

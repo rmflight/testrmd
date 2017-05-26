@@ -1,15 +1,10 @@
 <!--html_preserve-->
-<div class="col-md-12 testrmd-{{status}}">
-  {{#pass}}
-    <div class="alert alert-success" role="alert" data-toggle="collapse" data-target="#{{chunk_id}}" aria-expanded="false" aria-controls="{{chunk_id}}">
-      <strong>Tests passed</strong>
-    </div>
-  {{/pass}}
-  {{^pass}}
-    <div class="alert alert-danger" role="alert" data-toggle="collapse" data-target="#{{chunk_id}}" aria-expanded="false" aria-controls="{{chunk_id}}">
-      <strong>{{ error_count }} tests failed</strong> (click for details)
-    </div>
-  {{/pass}}
-</div>
-<div class="testrmd-section {{status}} {{#pass}}collapse{{/pass}}" id="{{chunk_id}}">
+<div class="testrmd-section testrmd-section-{{status}} panel panel-{{bootstrap_class}}">
+  <div class="panel-heading" data-toggle="collapse" data-target="#{{chunk_id}}" aria-expanded="{{#pass}}false{{/pass}}{{^pass}}true{{/pass}}" aria-controls="{{chunk_id}}">
+    <h4 class="panel-title">
+      {{#pass}}Tests passed{{/pass}}
+      {{^pass}}{{error_count}} tests failed{{/pass}}
+    </h4>
+  </div>
+  <div id="{{chunk_id}}" class="panel-body panel-collapse {{#pass}}collapse{{/pass}} {{^pass}}in{{/pass}}">
 <!--/html_preserve-->
