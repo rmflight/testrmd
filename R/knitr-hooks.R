@@ -16,6 +16,16 @@ init <- function() {
   knitr::knit_hooks$set(chunk = knitr_chunk_hook)
 }
 
+#' @export
+styles <- function() {
+  htmltools::attachDependencies(
+    htmltools::tagList(),
+    htmltools::htmlDependency("testrmd", packageVersion("testrmd"),
+      src = system.file("css", package = "testrmd"),
+      stylesheet = "testrmd.css")
+  )
+}
+
 render_template <- function(template_name, data) {
   path <- system.file("templates", paste0(template_name, ".html"), package = "testrmd")
   if (!nzchar(path)) {
@@ -33,14 +43,17 @@ knitr_chunk_hook <- function(x, options) {
 
   data <- list(
     chunk_id = sprintf("testrmd-chunk-%07d", sample.int(9999999, 1)),
-    button_class = "default"
+    button_class = "default",
+    status = "pass"
   )
   begin <- render_template("chunk-begin", data)
   end <- render_template("chunk-end", data)
 
-  paste0(
+  html <- paste0(
     begin,
     paste(x, collapse = "\n"),
     end
   )
+
+  html
 }

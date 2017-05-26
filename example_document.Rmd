@@ -4,35 +4,9 @@ author: "everyone"
 date: "`r Sys.time()`"
 ---
 
-```{css}
-.testrmd-section {
-  padding: 10px;
-}
-.testrmd-section.pass {
-  background-color: #CCFFCC;
-}
-```
-
 ```{r setup}
-knitr::knit_hooks$set(
-  chunk = function(x, options) {
-    if (isTRUE(options$test)) {
-      paste0(
-        "<div class='testrmd-section pass'>",
-        paste(x, collapse = "\n"),
-        "</div>"
-      )
-    } else {
-      x
-    }
-  }
-)
-
-run_function <- function(code){
-  try(code)
-}
-
-knitr::opts_chunk$set(error = TRUE)
+testrmd::init()
+testrmd::styles()  # Just temporary--should be automatic
 ```
 
 ## Do Some Tests
