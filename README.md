@@ -33,9 +33,11 @@ need to add `test = TRUE` in the chunk header, and then have testing code
 that returns an error if the test fails. As a simple example, lets test if
 a variable is numeric:
 
-```{r test_chunk, test = TRUE}
+```
+<!--html_preserve-->```{r test_chunk, test = TRUE}
 y <- "5"
 stopifnot(is.numeric(y))
+```<!--/html_preserve-->
 ```
 
 ## Supported Frameworks
