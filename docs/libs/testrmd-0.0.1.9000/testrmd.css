@@ -1,0 +1,33 @@
+.testrmd-section .panel-heading h4 {
+  font-size: 13px;
+}
+
+.testrmd-section-pass .panel-heading h4 {
+  font-weight: normal;
+}
+
+.panel.testrmd-section-pass>.panel-heading {
+  background: none;
+}
+
+.testrmd-badge-container-outer {
+  position: relative;
+  top: -2px;
+  height: 0px;
+}
+
+.testrmd-badge-container-inner {
+  position: absolute;
+  right: -126px;
+  width: 120px;
+}
+
+.testrmd-badge {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.testrmd-chunk.panel>.panel-heading {
+  padding-top: 15px;
+  padding-bottom: 5.5px;
+}

@@ -2,9 +2,10 @@
 title: "CRAN log processing"
 output:
   html_document:
-    keep_md: true
+    self_contained: false
+    lib_dir: libs
 params:
-  packages: assertr, assertthat, ensurer, assertive, checkmate, validate
+  packages: assertr, assertthat, ensurer, assertive, checkmate, validate, breakfast
   start: !r as.Date("2016-01-01")
   end: !r as.Date(Sys.time()) - 1
 ---
