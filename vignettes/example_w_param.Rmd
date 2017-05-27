@@ -1,0 +1,47 @@
+---
+title: "Disabling tests using YAML params"
+date: "`r Sys.Date()`"
+params:
+  test: FALSE
+---
+
+```{r setup, include = FALSE}
+testrmd::init()
+```
+
+### Using YAML to disable tests
+
+By adding `test: FALSE` to your YAML params you can stop test chunks from being evaluated throughout the document. If the parameter is set to `test: TRUE`, test chunks will run as usual.
+
+```
+params:
+  test: FALSE
+```
+
+This test parameter is passed into your chunk options using `eval = params$test`, as shown below.
+
+<!--html_preserve-->
+<pre>```{r stopifnot_parameterized, test = TRUE, eval = params$test}
+counts <- c(1, 2, 3, 4.5)
+stopifnot(
+  is.numeric(counts),
+  all(counts >= 0),
+  isTRUE(all.equal(counts, round(counts)))
+)
+```</pre><!--/html_preserve-->
+
+### Enabling individual test chunks
+
+To run selected test chunks within the same document, you simply exclude the `eval` option for an individual chunk, or expressly set the chunk option to `eval = TRUE`.
+
+<!--html_preserve-->
+<pre>```{r failing_test, test = TRUE, eval = TRUE}
+library(assertthat)
+assert_that(is.numeric(y))
+```</pre><!--/html_preserve-->
+
+```{r failing_test_true, test = TRUE}
+library(assertthat)
+assert_that(is.numeric(y))
+```
+
