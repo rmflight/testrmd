@@ -8,7 +8,6 @@ output:
 
 
 ```r
-set.seed(1234)
 params <- list(packages = c("assertr", "assertthat", "ensurer", "assertive", "checkmate", "validate"),
                start = as.Date("2016-01-01"),
                end = as.Date(Sys.time()) - 1)
@@ -192,13 +191,6 @@ plotly::ggplotly(week_plot)
 
 
 ```
-## Warning in dev_fun(tmpPlotFile, width = deviceWidth, height =
-## deviceHeight): X cannot set locale modifiers
-```
-
-
-
-```
 ## Error in loadNamespace(name): there is no package called 'webshot'
 ```
 
@@ -220,7 +212,7 @@ daily_downloads %>%
 ## # A tibble: 1 x 2
 ##   package count
 ##     <chr> <dbl>
-## 1 assertr  9325
+## 1 assertr  9340
 ```
 
 

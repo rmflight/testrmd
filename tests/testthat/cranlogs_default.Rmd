@@ -7,7 +7,6 @@ output:
 ---
 
 ```{r}
-set.seed(1234)
 params <- list(packages = c("assertr", "assertthat", "ensurer", "assertive", "checkmate", "validate"),
                start = as.Date("2016-01-01"),
                end = as.Date(Sys.time()) - 1)
