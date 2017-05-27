@@ -55,7 +55,7 @@ an analysis using `cranlogs` are available.
 * [`testthat`](https://github.com/hadley/testthat) (must use `devtools::install_github("hadley/testthat#594")` for now)
 * [`assertthat`](https://github.com/hadley/assertthat)
 * [`assertr`](https://github.com/ropensci/assertr)
-* [`ensurer`](https://github.com/smbache/ensure)
+* [`ensurer`](https://github.com/smbache/ensurer)
 * [`assertive`](https://bitbucket.org/richierocks/assertive)
 * [`checkmate`](https://github.com/mllg/checkmate)
 * [`testit`](https://github.com/yihui/testit)
