@@ -63,6 +63,7 @@ current_chunk_counts <- new.env(parent = emptyenv())
 current_doc_counts <- new.env(parent = emptyenv())
 reset_doc_counts()
 
+#' @importFrom utils packageVersion
 dependencies <- function() {
   htmltools::attachDependencies(
     htmltools::tagList(),
