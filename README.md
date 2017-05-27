@@ -1,6 +1,7 @@
 <img src = "testrmd_hex.png" height = "100">
 
-# testrmd
+# testrmd 
+![Build Status](https://api.travis-ci.org/ropenscilabs/testrmd.svg?branch=master)
 
 `testrmd` provides facilities to enable testing of and reporting on tested
 R Markdown chunks.
