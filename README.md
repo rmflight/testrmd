@@ -6,6 +6,8 @@
 `testrmd` provides facilities to enable testing of and reporting on tested
 R Markdown chunks.
 
+![Screen recording](testrmd.gif)
+
 ### Why test?
 
 As the author of an R Markdown document, there are assumptions you make along the way: that your data is a certain shape, that certain populations are represented, that your time series doesn't have any gaps. By writing explicit tests, you can spot any violations of these assumptions earlier, and prevent readers of your document from coming to any unwarranted conclusions.
