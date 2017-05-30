@@ -1,11 +1,13 @@
 ---
 title: "Disabling tests using YAML params"
 date: "`r Sys.Date()`"
+output: html_document
 params:
   test: FALSE
-%\VignetteIndexEntry{Disabling tests using YAML params}
-%\VignetteEngine{rmarkdown::render}
-%\UsePackage{assertthat}
+vignette: >
+  %\VignetteIndexEntry{Disabling tests using YAML params}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{assertthat}
 ---
 
 ```{r setup, include = FALSE}

@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 testrmd.gif
 .travis.yml
+docs/
