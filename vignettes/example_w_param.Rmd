@@ -3,6 +3,9 @@ title: "Disabling tests using YAML params"
 date: "`r Sys.Date()`"
 params:
   test: FALSE
+%\VignetteIndexEntry{Disabling tests using YAML params}
+%\VignetteEngine{rmarkdown::render}
+%\UsePackage{assertthat}
 ---
 
 ```{r setup, include = FALSE}
